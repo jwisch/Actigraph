@@ -1,2 +1,10 @@
 # Actigraph
 Workstreams for processing Actgraph via both nParACT and FDA
+
+I wrote an automated pipeline to run wrist-worn actigraph data results through for our HECS cohort based off of this package:https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4890079/
+I compared my automated results to the ClockLab results that Chris Sorenson did by hand, and was within +/-5% of his results, so I think it worked pretty well
+We were supposed to try to process Yo-El Ju’s actigraph data from the ADRC pipeline and validate that we got similar results to hers, but that never happened. If this validation is performed, then we can automate processing of actigraph.
+There’s another approach to analyzing actigraph called “Functional Data Analysis”oBasically you do a Fourier transform on the actigraph signal and smooth it to get nice wave functions.oActigraphy is the name of the package ->https://cran.r-project.org/web/packages/Actigraphy/Actigraphy.pdfoBill 
+Examples of how I applied both packages are provided in the code section:ReadinFiles and GetNightlySleepTime do analysis the clocklab wayoReadinFiles gives the following sleep parameters: IS, IV, 5 hours with least activity, start time of that 5 hour window, 10 hours with greatest activity, start of that 10 hour window, RA, number of days of collected data (these match the values that you can get from clocklab)oGetNightlySleepTime tries to extract the largest single chunk of sleep per night while dropping naps but not dropping half a night’s sleep if someone,for example, got up to go to the bathroom in the middle of the night. It’s not perfect, but works generally well –definitely inspect data after processing and manually look at the weird seeming results.
+FDA Analysis does the sine-wave figure producing way. Follow along in the published Actigraphy vignette and see how I applied their approaches to our data
+I wound up having to tweak the package code for nparACT (the clocklab-esque package) to get things to run. My adjusted code is also in the code folder.
